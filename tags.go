@@ -87,3 +87,9 @@ func (t Tags) Unique() (unique Tags) {
 	}
 	return
 }
+
+type TagsFunc func() Tags
+
+func (t TagsFunc) Tags() []*Tag {
+	return t()
+}

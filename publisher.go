@@ -11,3 +11,7 @@ func (p Publisher) Log(event *Event) {
 func NewPublisher(subscribers ...Subscriber) Publisher {
 	return subscribers
 }
+
+func (p *Publisher) Add(subscriber Subscriber) {
+	*p = append(*p, subscriber)
+}

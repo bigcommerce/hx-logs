@@ -3,13 +3,20 @@ package logs
 import "time"
 
 var DefaultTimeFormatter = &TimeFormatter{
-	TimeFormat: "2 Jan 2006 15:04:05.000 MST",
+	TimeFormat: "02 Jan 2006 15:04:05.000 MST",
 	Location:   time.UTC,
 }
 
 type TimeFormatter struct {
 	TimeFormat string
 	Location   *time.Location
+}
+
+func NewTimeFormatter(format string, location *time.Location) *TimeFormatter {
+	return &TimeFormatter{
+		Location:   location,
+		TimeFormat: format,
+	}
 }
 
 func (t *TimeFormatter) Format(event *Event) []byte {

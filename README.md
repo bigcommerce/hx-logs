@@ -38,26 +38,26 @@ if err != nil {
 	panic(err)
 }
 
-// A TimeFormatter can be used by other formatters
+// A TimeFormatter can be used by other Formatters
 timeFormatter := logs.NewTimeFormatter(
 	"2006-01-02 15:04",
 	location,
 )
 
+// Make your own Formatter using a simple function
+formatter := logs.FormatterFunc(func(event *logs.Event) []byte {
+	return append(
+		timeFormatter.Format(event),
+		[]byte(fmt.Sprintf(" (%s) %s\n",
+			event.Level.Abbreviation(),
+			event.Message,
+		))...,
+	)
+})
+
 // A Publisher can send logs to several Subscribers
 publisher := logs.NewPublisher(
-	logs.NewWriterWithFormat(
-		os.Stdout,
-		logs.FormatterFunc(func(event *logs.Event) []byte {
-			return append(
-				timeFormatter.Format(event),
-				[]byte(fmt.Sprintf(" (%s) %s\n",
-					event.Level.Abbreviation(),
-					event.Message,
-				))...,
-			)
-		}),
-	),
+	logs.NewWriterWithFormat(os.Stdout, formatter),
 )
 
 // Conditionally add more Subscribers to your publisher
@@ -67,13 +67,13 @@ if jsonPath := os.Getenv("JSON_LOG_PATH"); jsonPath != "" {
 		panic(err)
 	}
 	var messageID uint64
-	publisher.Add(logs.NewWriterWithFormat(
-		jsonFile,
-		logs.NewJsonFormatter(logs.TagsFunc(func() logs.Tags {
-			messageID += 1
-			return logs.Tags{{"messageID", messageID}}
-		})),
-	))
+	
+	// JsonFormatter produces Logstash-compatible output
+	jsonFormatter := logs.NewJsonFormatter(logs.TagsFunc(func() logs.Tags {
+		messageID += 1
+		return logs.Tags{{"messageID", messageID}}
+	}))
+	publisher.Add(logs.NewWriterWithFormat(jsonFile, jsonFormatter))
 }
 
 // Use a Buffer to ensure log writing doesn't block on IO

@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+// Event represents a single log message.
 type Event struct {
 	Time    time.Time
 	Level   Level

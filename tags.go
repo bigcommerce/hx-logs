@@ -16,16 +16,22 @@ type TagSet interface {
 	Tags() []*Tag
 }
 
+// Tags can be attached to log events to provide additional information, particularly for JSON
+// and other structured log formatters.
 type Tags []*Tag
 
 func (t Tags) Tags() []*Tag {
 	return t
 }
 
+// Join creates a new Tags by appending the given tags to the receiver. Tags towards the end of
+// the slice take precedence, meaning the joined tags will override those in the receiver with
+// the same name.
 func (t Tags) Join(other ...*Tag) Tags {
 	return append(t, other...)
 }
 
+// Map returns a map of tag keys to values. Overridden tags are excluded from the returned map.
 func (t Tags) Map() (m map[string]interface{}) {
 	m = make(map[string]interface{}, len(t))
 	for _, tag := range t {
@@ -34,6 +40,8 @@ func (t Tags) Map() (m map[string]interface{}) {
 	return
 }
 
+// QueryEncode formats tags as a percent-encoded URL query string. Tags are positioned in the
+// string in the order they first appear, with later values taking precedence.
 func (t Tags) QueryEncode() []byte {
 	buf := new(bytes.Buffer)
 	for i, tag := range t.Unique() {
@@ -47,6 +55,7 @@ func (t Tags) QueryEncode() []byte {
 	return buf.Bytes()
 }
 
+// MarshalJSON causes the received to be marshaled to JSON as an object with ordered keys.
 func (t Tags) MarshalJSON() (encoded []byte, err error) {
 	buf := new(bytes.Buffer)
 	add := func(v interface{}) error {
@@ -88,6 +97,7 @@ func (t Tags) Unique() (unique Tags) {
 	return
 }
 
+// TagsFunc creates a  TagSet implementation from the given function.
 type TagsFunc func() Tags
 
 func (t TagsFunc) Tags() []*Tag {

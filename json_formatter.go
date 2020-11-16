@@ -1,9 +1,11 @@
 package logs
 
+// JsonFormatter is a JSON log formatter compatible with Logstash.
 type JsonFormatter struct {
 	Tags TagSet
 }
 
+// NewJsonFormatter creates a new JsonFormatter with the given TagSet.
 func NewJsonFormatter(tags TagSet) *JsonFormatter {
 	return &JsonFormatter{Tags: tags}
 }

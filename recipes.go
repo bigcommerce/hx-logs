@@ -5,22 +5,34 @@ import (
 	"os"
 )
 
+// NewPlainTextLogger creates a new Logger with the given Level for the given io.Writer,
+// using DefaultPlainTextFormatter as its formatter.
 func NewPlainTextLogger(level Level, writer io.Writer) *Logger {
 	return NewLogger(level, NewWriterWithFormat(writer, DefaultPlainTextFormatter))
 }
 
+// NewColoredTextLogger creates a new Logger with the given Level for the given io.Writer,
+// using DefaultColoredTextFormatter as its formatter.
 func NewColoredTextLogger(level Level, writer io.Writer) *Logger {
 	return NewLogger(level, NewWriterWithFormat(writer, DefaultColoredTextFormatter))
 }
 
+// NewFormattedLogger creates a new Logger with the given Level for the given io.Writer,
+// using the given Formatter as its formatter.
 func NewFormattedLogger(level Level, writer io.Writer, formatter Formatter) *Logger {
 	return NewLogger(level, NewWriterWithFormat(writer, formatter))
 }
 
+// NewStdoutLogger creates a new Logger with the given Level for STDOUT, using either
+// DefaultPlainTextFormatter or DefaultColoredTextFormatter as its formatter, depending
+// on whether it senses a TTY.
 func NewStdoutLogger(level Level) *Logger {
 	return newSenseTTYLogger(level, os.Stdout)
 }
 
+// NewStderrLogger creates a new Logger with the given Level for STDERR, using either
+// DefaultPlainTextFormatter or DefaultColoredTextFormatter as its formatter, depending
+// on whether it senses a TTY.
 func NewStderrLogger(level Level) *Logger {
 	return newSenseTTYLogger(level, os.Stderr)
 }

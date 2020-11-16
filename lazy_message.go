@@ -2,6 +2,8 @@ package logs
 
 import "fmt"
 
+// LazyMessage is used by Producer to delay formatting of messages, in case
+// an event is to be discarded by a LevelFilter.
 type LazyMessage struct {
 	Message string
 	Args    []interface{}

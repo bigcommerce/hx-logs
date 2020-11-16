@@ -4,10 +4,13 @@ import (
 	"fmt"
 )
 
+// Formatter can format a given Event for writing to a log device. Formatters should
+// normally include a trailing newline.
 type Formatter interface {
 	Format(event *Event) []byte
 }
 
+// FormatterFunc creates a Formatter using the given function.
 type FormatterFunc func(event *Event) []byte
 
 func (f FormatterFunc) Format(event *Event) (formatted []byte) {
@@ -17,6 +20,8 @@ func (f FormatterFunc) Format(event *Event) (formatted []byte) {
 	return
 }
 
+// DefaultPlainTextFormatter formats events as the time (using DefaultTimeFormatter),
+// the Level abbreviation, and the message. Tags are not included.
 var DefaultPlainTextFormatter Formatter = FormatterFunc(func(event *Event) []byte {
 	return append(DefaultTimeFormatter.Format(event), []byte(fmt.Sprintf(
 		" %s %s\n",
@@ -25,6 +30,8 @@ var DefaultPlainTextFormatter Formatter = FormatterFunc(func(event *Event) []byt
 	))...)
 })
 
+// DefaultColoredTextFormatter is the same as DefaultPlainTextFormatter, but adds
+// color to the Level component to help messages of different severities stand out.
 var DefaultColoredTextFormatter Formatter = FormatterFunc(func(event *Event) []byte {
 	return append(DefaultTimeFormatter.Format(event), []byte(fmt.Sprintf(
 		" %s%s%s %s\n",
@@ -35,6 +42,8 @@ var DefaultColoredTextFormatter Formatter = FormatterFunc(func(event *Event) []b
 	))...)
 })
 
+// MessageOnlyFormatter is a simple formatter that returns an event's message followed
+// by a newline.
 var MessageOnlyFormatter Formatter = FormatterFunc(func(event *Event) []byte {
 	return append([]byte(event.Message.String()), '\n')
 })

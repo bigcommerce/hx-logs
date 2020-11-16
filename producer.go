@@ -2,6 +2,8 @@ package logs
 
 import "time"
 
+// Producer provides the per-level functions of Logger, but can also be wrapped around any
+// Subscriber when composing custom loggers.
 type Producer struct {
 	Subscriber
 }

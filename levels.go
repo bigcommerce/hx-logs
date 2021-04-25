@@ -17,6 +17,7 @@ const (
 	Warn
 	Error
 	Fatal
+	Silent
 )
 
 // Color represents an ANSI color code that can be used to enhance log messages meant for
@@ -66,6 +67,7 @@ var Levels = map[Level]LevelInfo{
 	Warn:    {"warn", "WARN ", Yellow},
 	Error:   {"error", "ERROR", Red},
 	Fatal:   {"fatal", "FATAL", Magenta},
+	Silent:  {"silent", "SIL", White},
 }
 
 // Name returns the lowercase name of a Level.

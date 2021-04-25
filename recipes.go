@@ -27,17 +27,20 @@ func NewFormattedLogger(level Level, writer io.Writer, formatter Formatter) *Log
 // DefaultPlainTextFormatter or DefaultColoredTextFormatter as its formatter, depending
 // on whether it senses a TTY.
 func NewStdoutLogger(level Level) *Logger {
-	return newSenseTTYLogger(level, os.Stdout)
+	return NewTextLogger(level, os.Stdout)
 }
 
 // NewStderrLogger creates a new Logger with the given Level for STDERR, using either
 // DefaultPlainTextFormatter or DefaultColoredTextFormatter as its formatter, depending
 // on whether it senses a TTY.
 func NewStderrLogger(level Level) *Logger {
-	return newSenseTTYLogger(level, os.Stderr)
+	return NewTextLogger(level, os.Stderr)
 }
 
-func newSenseTTYLogger(level Level, file *os.File) *Logger {
+// NewTextLogger creates a new Logger with the given Level for the given os.File, using either
+// DefaultPlainTextFormatter or DefaultColoredTextFormatter as its formatter, depending
+// on whether it senses a TTY.
+func NewTextLogger(level Level, file *os.File) *Logger {
 	stat, err := file.Stat()
 	if err != nil {
 		panic(err)

@@ -25,7 +25,7 @@ func (l *Logger) Log(event *Event) {
 }
 
 // SetLevel changes the Level of the receiving Logger. The function is not concurrency-safe,
-// so care should be taken not to race an log calls.
+// so care should be taken not to race any log calls.
 func (l *Logger) SetLevel(level Level) {
 	l.level = level
 	if level == 0 {

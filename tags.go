@@ -55,7 +55,7 @@ func (t Tags) QueryEncode() []byte {
 	return buf.Bytes()
 }
 
-// MarshalJSON causes the received to be marshaled to JSON as an object with ordered keys.
+// MarshalJSON causes the receiver to be marshaled to JSON as an object with ordered keys.
 func (t Tags) MarshalJSON() (encoded []byte, err error) {
 	buf := new(bytes.Buffer)
 	add := func(v interface{}) error {
@@ -97,7 +97,7 @@ func (t Tags) Unique() (unique Tags) {
 	return
 }
 
-// TagsFunc creates a  TagSet implementation from the given function.
+// TagsFunc creates a TagSet implementation from the given function.
 type TagsFunc func() Tags
 
 func (t TagsFunc) Tags() []*Tag {

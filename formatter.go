@@ -34,10 +34,8 @@ var DefaultPlainTextFormatter Formatter = FormatterFunc(func(event *Event) []byt
 // color to the Level component to help messages of different severities stand out.
 var DefaultColoredTextFormatter Formatter = FormatterFunc(func(event *Event) []byte {
 	return append(DefaultTimeFormatter.Format(event), []byte(fmt.Sprintf(
-		" %s%s%s %s\n",
-		event.Level.Color().Esc(Bold),
-		event.Level.Abbreviation(),
-		NoColor.Esc(),
+		" %s %s\n",
+		event.Level.Color().Bold().Wrap(event.Level.Abbreviation()),
 		event.Message,
 	))...)
 })

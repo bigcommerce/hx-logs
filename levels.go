@@ -1,7 +1,7 @@
 package logs
 
 import (
-	"strconv"
+	"github.com/hx/golib/ansi"
 	"strings"
 )
 
@@ -20,54 +20,23 @@ const (
 	Silent
 )
 
-// Color represents an ANSI color code that can be used to enhance log messages meant for
-// display on a TTY.
-type Color int
-
-const (
-	Black Color = iota + 30
-	Red
-	Green
-	Yellow
-	Blue
-	Magenta
-	Cyan
-	White
-)
-
-const (
-	NoColor Color = iota
-	Bold
-)
-
-// Esc returns an escape sequence for the receiving Color, plus any additional modifiers.
-// You can, for example, pass Bold as an argument to get a brighter version of a color.
-func (c Color) Esc(others ...Color) (seq []byte) {
-	seq = strconv.AppendInt([]byte{27, '['}, int64(c), 10)
-	for _, other := range others {
-		seq = strconv.AppendInt(append(seq, ';'), int64(other), 10)
-	}
-	seq = append(seq, 'm')
-	return
-}
-
 // LevelInfo represents the default properties of a Level.
 type LevelInfo struct {
 	Name         string
 	Abbreviation string
-	Color        Color
+	Color        ansi.EscapeSequence
 }
 
 // Levels contains default properties of the set levels, which can be used by formatters.
 var Levels = map[Level]LevelInfo{
-	Verbose: {"verbose", "VRBSE", Blue},
-	Trace:   {"trace", "TRACE", Green},
-	Debug:   {"debug", "DEBUG", Cyan},
-	Info:    {"info", "INFO ", NoColor},
-	Warn:    {"warn", "WARN ", Yellow},
-	Error:   {"error", "ERROR", Red},
-	Fatal:   {"fatal", "FATAL", Magenta},
-	Silent:  {"silent", "SIL", White},
+	Verbose: {"verbose", "VRBSE", ansi.Blue},
+	Trace:   {"trace", "TRACE", ansi.Green},
+	Debug:   {"debug", "DEBUG", ansi.Cyan},
+	Info:    {"info", "INFO ", 0},
+	Warn:    {"warn", "WARN ", ansi.Yellow},
+	Error:   {"error", "ERROR", ansi.Red},
+	Fatal:   {"fatal", "FATAL", ansi.Magenta},
+	Silent:  {"silent", "SILNT", ansi.White},
 }
 
 // Name returns the lowercase name of a Level.
@@ -81,7 +50,7 @@ func (l Level) Abbreviation() string {
 }
 
 // Color returns the Color of the receiving Level, based on the Levels map.
-func (l Level) Color() Color {
+func (l Level) Color() ansi.EscapeSequence {
 	return Levels[l].Color
 }
 

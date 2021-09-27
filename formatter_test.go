@@ -20,7 +20,7 @@ var FormattingTestEvent = &Event{
 
 func TestDefaultColoredTextFormatter(t *testing.T) {
 	actual := DefaultColoredTextFormatter.Format(FormattingTestEvent)
-	Equals(t, "13 Feb 2009 23:31:30.123 UTC \033[36;1mDEBUG\033[0m Let's party\n", string(actual))
+	Equals(t, "13 Feb 2009 23:31:30.123 UTC \033[1;36mDEBUG\033[0m Let's party\n", string(actual))
 }
 
 func TestDefaultPlainTextFormatter(t *testing.T) {

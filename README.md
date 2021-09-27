@@ -2,12 +2,12 @@
 
 Versatile logging for Golang
 
-[![GoDoc](https://godoc.org/github.com/hx/logs?status.svg)](https://godoc.org/github.com/hx/logs)
+[![GoDoc](https://godoc.org/github.com/bigcommerce/logs?status.svg)](https://godoc.org/github.com/bigcommerce/logs)
 
 ## Usage
 
 ```bash
-go get -u github.com/hx/logs
+go get -u github.com/bigcommerce/logs
 ```
 
 Simple loggers only require a `level`:
@@ -80,4 +80,4 @@ if jsonPath := os.Getenv("JSON_LOG_PATH"); jsonPath != "" {
 logger := logs.NewLogger(level, logs.NewBuffer(1000, publisher))
 ```
 
-See [the documentation](https://godoc.org/github.com/hx/logs) for the complete API.
+See [the documentation](https://godoc.org/github.com/bigcommerce/logs) for the complete API.

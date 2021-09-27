@@ -3,8 +3,8 @@ package logs_test
 import (
 	"bytes"
 	"encoding/json"
-	. "github.com/hx/logs"
-	. "github.com/hx/logs/testing"
+	. "github.com/bigcommerce/logs"
+	. "github.com/bigcommerce/logs/testing"
 	"testing"
 )
 

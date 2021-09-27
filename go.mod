@@ -1,4 +1,4 @@
-module github.com/hx/logs
+module github.com/bigcommerce/logs
 
 go 1.15
 

@@ -6,6 +6,7 @@ import "time"
 // Subscriber when composing custom loggers.
 type Producer struct {
 	Subscriber
+	Clock func() time.Time // Function used to timestamp events created by the receiver
 }
 
 func (p *Producer) Verbose(message string, a ...interface{}) { p.Log(Verbose, message, a) }
@@ -17,12 +18,17 @@ func (p *Producer) Error(message string, a ...interface{})   { p.Log(Error, mess
 func (p *Producer) Fatal(message string, a ...interface{})   { p.Log(Fatal, message, a) }
 
 func (p *Producer) Log(level Level, message string, a []interface{}) {
-	p.Subscriber.Log(&Event{
-		Time:  time.Now(),
+	event := Event{
 		Level: level,
 		Message: &LazyMessage{
 			Message: message,
 			Args:    a,
 		},
-	})
+	}
+	if p.Clock == nil {
+		event.Time = time.Now()
+	} else {
+		event.Time = p.Clock()
+	}
+	p.Subscriber.Log(&event)
 }

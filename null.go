@@ -20,4 +20,4 @@ func (n *NullFormatter) Format(*Event) []byte { return nil }
 var NullWriter = NewWriterWithFormat(io.Discard, new(NullFormatter))
 
 // NullProducer is a producer that discards all events.
-var NullProducer = &Producer{new(NullSubscriber)}
+var NullProducer = &Producer{Subscriber: new(NullSubscriber)}

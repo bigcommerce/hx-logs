@@ -40,6 +40,7 @@ func (l *Logger) SetLevel(level Level) {
 // TagSet implementations should be discarded after use.
 func (l *Logger) Extend(tags TagSet) (extended *Logger) {
 	extended = NewLogger(l.level, l.subscriber)
+	extended.Clock = l.Clock
 	extended.Tags = l.Tags.Join(tags.Tags()...)
 	return
 }
